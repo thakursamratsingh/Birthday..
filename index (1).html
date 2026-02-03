@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 💗</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Dancing Script',cursive;}
+
+/* COMMON */
+.page{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  opacity:1;
+  transition: opacity 0.8s ease-in-out;
+}
+.hidden{display:none; opacity:0; transition:none;}
+
+/* PAGE 1 */
+#page1{
+  background:linear-gradient(180deg,#f3b6cf,#e98bb6);
+  color:#fff;
+}
+#page1 h1{
+  font-family:'Great Vibes',cursive;
+  font-size:3.2rem;
+  margin-bottom:14px;
+}
+#page1 img{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:18px;
+  box-shadow:0 0 25px rgba(255,255,255,.45);
+}
+#clickBtn{
+  padding:10px 30px;
+  font-size:1.3rem;
+  border:none;
+  border-radius:14px;
+  background:#ff4f8b;
+  color:#fff;
+  cursor:pointer;
+  margin-bottom:15px;
+}
+
+/* PAGE 2 */
+#page2{
+  background:#fde4ef;
+  color:#ff4f8b;
+}
+.cake{
+  font-size:95px;
+  position:relative;
+}
+.flame{
+  width:12px;
+  height:20px;
+  background:radial-gradient(circle,#ffd36a,#ff9800);
+  border-radius:50%;
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  animation:flicker .15s infinite;
+}
+@keyframes flicker{
+  50%{transform:translateX(-50%) scale(1.1)}
+}
+#countdown{
+  font-size:3rem;
+  margin-top:12px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.countdown-animate{
+  transform: scale(1.5);
+  opacity: 0;
+}
+
+/* PAGE 3 */
+#page3{
+  background:linear-gradient(180deg,#f29bc2,#e474ab);
+  color:#fff;
+  overflow-y:auto;
+}
+#page3 h1{
+  font-size:2.6rem;
+  margin-bottom:12px;
+}
+#page3 p{
+  width:95%;
+  max-width:620px;
+  font-size:1.25rem;
+  line-height:1.45;
+  font-weight:700;
+  min-height:200px;
+}
+
+/* HEARTS */
+.hearts{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+.heart{
+  position:absolute;
+  color:#ffd6e8;
+  opacity:.3;
+  animation:float 10s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(-10vh)}
+  to{transform:translateY(120vh)}
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<section id="page1" class="page">
+  <h1>Heyyy Birthday Girl 🎉</h1>
+  <img src="https://raw.githubusercontent.com/thakursamratsingh/Birthday../refs/heads/main/InShot_20260203_120606147.jpg" alt="Anushka didi">
+  <button id="clickBtn">Click Here 🎁</button>
+</section>
+
+<!-- PAGE 2 -->
+<section id="page2" class="page hidden">
+  <div class="cake">🎂
+    <div class="flame" id="flame"></div>
+  </div>
+  <div>Blow these candles ✨</div>
+  <div id="countdown">5</div>
+</section>
+
+<!-- PAGE 3 -->
+<section id="page3" class="page hidden">
+  <div class="hearts" id="hearts"></div>
+  <h1>Happy Birthday, motiiiii 🎉</h1>
+  <p id="typeText"></p>
+</section>
+
+<script>
+// PAGE REFERENCES
+const page1 = document.getElementById('page1');
+const page2 = document.getElementById('page2');
+const page3 = document.getElementById('page3');
+const clickBtn = document.getElementById('clickBtn');
+const countdown = document.getElementById('countdown');
+const flame = document.getElementById('flame');
+const typeText = document.getElementById('typeText');
+
+// FULL MESSAGE
+const message = `
+Thank youuu for being in my lifeeeee 💗  
+Thank youuu for always helpingg me without any expectation,  
+justt pure loveee ❤️
+
+Thanks for being my personal Google,  
+sometimes my unpaid therapist 🫀
+
+Life is besttt and ya (safestt) around youu diduuuu…  
+too luckyyyy to have uh in my lifeeee 💕
+
+“No matter how old I get,  
+I’ll always need you by my side.” 💞  
+
+Happiest birthday once againn didi ✨  
+Stay awesome and keep shining — today is all about you 🎉  
+
+Lot's of love — Akhand 🤍
+`;
+
+// TRANSITION
+function fadeTransition(from,to,callback){
+  from.style.opacity=0;
+  setTimeout(()=>{
+    from.classList.add('hidden');
+    to.classList.remove('hidden');
+    to.style.opacity=0;
+    setTimeout(()=>to.style.opacity=1,50);
+    if(callback) callback();
+  },800);
+}
+
+// START
+clickBtn.onclick=()=>{
+  fadeTransition(page1,page2,startCountdown);
+};
+
+// COUNTDOWN
+function startCountdown(){
+  let c=5;
+  countdown.textContent=c;
+  const t=setInterval(()=>{
+    countdown.classList.add('countdown-animate');
+    setTimeout(()=>{
+      c--;
+      if(c===0){
+        clearInterval(t);
+        flame.style.display="none";
+        fadeTransition(page2,page3,()=>{
+          startHearts();
+          typeWriter();
+        });
+        return;
+      }
+      countdown.textContent=c;
+      countdown.classList.remove('countdown-animate');
+    },300);
+  },1000);
+}
+
+// TYPEWRITER EFFECT
+function typeWriter(){
+  let i=0;
+  typeText.innerHTML="";
+  const speed=30;
+  const timer=setInterval(()=>{
+    typeText.innerHTML += message.charAt(i).replace(/\n/g,"<br>");
+    i++;
+    if(i>=message.length) clearInterval(timer);
+  },speed);
+}
+
+// HEARTS
+function startHearts(){
+  setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.textContent="❤";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=12+Math.random()*14+"px";
+    document.getElementById("hearts").appendChild(h);
+    setTimeout(()=>h.remove(),12000);
+  },1400);
+}
+</script>
+
+</body>
+</html>
